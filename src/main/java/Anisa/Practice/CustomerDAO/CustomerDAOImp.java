@@ -33,4 +33,23 @@ public class CustomerDAOImp implements CustomerDAO {
         return customers;
 
     }
+
+    @Override
+    public Customer customerId(int theId) {
+        Session currentSession = sessionFactory.getCurrentSession();
+
+
+        Customer theCustomer = currentSession.get(Customer.class, theId);
+
+
+        return theCustomer;
+
+    }
+
+    @Override
+    public void saveCustomer(Customer theCustomer) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.saveOrUpdate(theCustomer);
+
+    }
 }

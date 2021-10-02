@@ -19,6 +19,8 @@ public class Customer {
     @Column(name = "lastname")
     private String lastname;
 
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "image")
     private byte[] image;
 

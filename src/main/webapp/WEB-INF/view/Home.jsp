@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="ui" uri="/taglib/userimage.tld" %>
+
 <%@ page isELIgnored="false" %>
 <html>
 <head>
@@ -16,6 +16,9 @@
 </head>
 <body>
 <h1>Welcome to Registration Page</h1>
+<p>
+    <a href="${pageContext.request.contextPath}/AddNewCustomer">Add New Customer</a>
+</p>
 <table>
     <tr>
         <th>First Name</th>
@@ -27,10 +30,10 @@
     <!-- loop over and print our customers -->
     <c:forEach var="tempCustomer" items="${customers}">
 
-    <tr>
-        <td> ${tempCustomer.name} </td>
-        <td> ${tempCustomer.lastname} </td>
-        <td><img src="<ui:image userImage="${tempCustomer.image}"/> </td>
+        <tr>
+            <td> ${tempCustomer.name} </td>
+            <td> ${tempCustomer.lastname} </td>
+            <td><img src="imageDisplay?id=${tempCustomer.id}" height="150px" width="150px"/></td>
             <td> ${tempCustomer.birthday} </td>
         </tr>
 
