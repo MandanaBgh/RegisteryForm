@@ -27,6 +27,12 @@ public class AppController {
 
     }
 
+    @GetMapping("/Home")
+    public String showHomePage() {
+
+        return "Home";
+    }
+
     @GetMapping("/")
     public String homePage(Model theModel) {
         List<Customer> customers = customerService.getCustomers();
