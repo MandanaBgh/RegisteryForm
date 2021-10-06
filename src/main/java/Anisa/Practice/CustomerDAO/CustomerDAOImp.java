@@ -51,5 +51,6 @@ public class CustomerDAOImp implements CustomerDAO {
         Session currentSession = sessionFactory.getCurrentSession();
         currentSession.saveOrUpdate(theCustomer);
 
+
     }
 }

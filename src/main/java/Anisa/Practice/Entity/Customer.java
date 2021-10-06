@@ -1,13 +1,31 @@
 package Anisa.Practice.Entity;
 
 
+//import com.github.mfathi91.time.PersianDate;
+
+import com.github.mfathi91.time.PersianDate;
+import org.hibernate.hql.spi.id.inline.AbstractInlineIdsBulkIdHandler;
+
 import javax.persistence.*;
+
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Arrays;
+
 import java.util.Date;
 
 @Entity
 @Table(name = "customers")
 public class Customer {
+    private static PersianDate persianDate;
+    private static LocalDate localDate;
+    private static int year;
+    private static int month;
+    private static int day;
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,11 +50,13 @@ public class Customer {
         this.lastname = lastname;
         this.image = image;
         this.birthday = birthday;
+
     }
 
     public Customer() {
 
     }
+
 
     public int getId() {
         return id;
@@ -71,11 +91,49 @@ public class Customer {
     }
 
     public Date getBirthday() {
-        return birthday;
+        if (birthday != null) {
+            try {
+                ConvertDateTime(birthday);
+                localDate = LocalDate.of(this.year, this.month, this.day);
+                persianDate = PersianDate.fromGregorian(localDate);
+                Date day = null;
+                day = new SimpleDateFormat("yyyy-MM-dd").parse(persianDate.toString());
+                return day;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+
     }
 
     public void setBirthday(Date birthday) {
-        this.birthday = birthday;
+        ConvertDateTime(birthday);
+//        if (year > 1800) {
+//            localDate = LocalDate.of(year, month, day);
+//            persianDate = PersianDate.fromGregorian(localDate);
+//            this.birthday = java.sql.Date.valueOf(String.valueOf(persianDate));
+//        } else {
+
+        persianDate = PersianDate.of(this.year, this.month, this.day);
+        localDate = persianDate.toGregorian();
+
+        this.birthday = java.sql.Date.valueOf(localDate);
+
+        //  }
+
+
+    }
+
+    private void ConvertDateTime(Date birthday) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String Shamsi = dateFormat.format(birthday);
+
+
+        this.year = Integer.valueOf(Shamsi.substring(0, 4));
+        this.month = Integer.valueOf(Shamsi.substring(4, 6));
+        this.day = Integer.valueOf(Shamsi.substring(6, 8));
+
     }
 
     @Override

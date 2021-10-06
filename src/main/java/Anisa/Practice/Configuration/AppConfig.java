@@ -13,6 +13,8 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.sql.DataSource;
@@ -25,7 +27,7 @@ import java.util.logging.Logger;
 @ComponentScan(basePackages = "Anisa.Practice")
 @EnableTransactionManagement
 @PropertySource("classPath:persistance-mysql.properties")
-public class AppConfig {
+public class AppConfig implements WebMvcConfigurer {
 
     @Autowired
     private Environment env;
@@ -65,6 +67,10 @@ public class AppConfig {
         return myAppDataSource;
     }
 
+    @Override
+    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+    }
 
     private int getIntProperty(String propName) {
         String propVal = env.getProperty(propName);

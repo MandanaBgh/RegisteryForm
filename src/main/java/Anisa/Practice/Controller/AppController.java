@@ -27,16 +27,10 @@ public class AppController {
 
     }
 
-    @GetMapping("/Home")
-    public String showHomePage() {
 
-        return "Home";
-    }
-
-    @GetMapping("/")
+    @GetMapping(value = {"/", "/Home"})
     public String homePage(Model theModel) {
         List<Customer> customers = customerService.getCustomers();
-
         theModel.addAttribute("customers", customers);
         return "Home";
     }
