@@ -19,6 +19,7 @@
 <p>
     <a href="${pageContext.request.contextPath}/AddNewCustomer">Add New Customer</a>
 </p>
+
 <table>
     <tr>
         <th>First Name</th>
@@ -29,12 +30,24 @@
 
     <!-- loop over and print our customers -->
     <c:forEach var="tempCustomer" items="${customers}">
-
+        <c:url var="updateLink" value="/showFormForUpdate">
+            <c:param name="customerId" value="${tempCustomer.id}"/>
+        </c:url>
+        <c:url var="deleteLink" value="/delete">
+            <c:param name="customerId" value="${tempCustomer.id}"/>
+        </c:url>
         <tr>
             <td> ${tempCustomer.name} </td>
             <td> ${tempCustomer.lastname} </td>
             <td><img src="imageDisplay?id=${tempCustomer.id}" height="60px" width="60px"/></td>
             <td><fmt:formatDate pattern="yyyy/MM/dd" value="${tempCustomer.birthday}"/></td>
+            <td>
+                <a href="${updateLink}">Update</a>
+            </td>
+            <td>
+                <a href="${deleteLink}"
+                   onclick="if (!(confirm('Are you sure you want to delete this customer?'))) return false">Delete</a>
+            </td>
         </tr>
 
     </c:forEach>

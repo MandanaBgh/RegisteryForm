@@ -9,12 +9,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<link rel="stylesheet" href="<c:url value="/resources/css/persian-datepicker.css" />">
+<script type="text/javascript" src="<c:url value="/resources/js/jquery.min.js" />"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/persian-datepicker.js" />"></script>
 
-<link rel="stylesheet" href="<c:url value="/resources/css/persianDatepicker-default.css" />">
-<script type="text/javascript" src="<c:url value="/resources/js/jquery-1.10.1.min.js" />"></script>
-<script type="text/javascript" src="<c:url value="/resources/js/persianDatepicker.min.js" />"></script>
+<script type="text/javascript">
+    $(function () {
 
-<script type="text/javascript" src="<c:url value="/resources/js/function.js" />"></script>
+        $('#datepicker0').datepicker();
+    })
+</script>
+
 <html>
 <head>
     <title>Add New Customer</title>
@@ -22,6 +28,7 @@
 
 
 <h3>New Customer</h3>
+
 <form:form modelAttribute="customer" method="POST" action="saveCustomer">
     <table>
         <tbody>
@@ -41,7 +48,16 @@
         </tr>
         <tr>
             <td><label>BirthDay:</label></td>
-            <td><form:input path="birthday" id="input1"/><span id="span1"></span></td>
+            <td>
+                <fmt:formatDate value="${customer.birthday}" type="date"
+                                pattern="yyyy/MM/dd"
+                                var="theFormattedDate"/>
+                <form:input path="birthday" value="${theFormattedDate}" id="datepicker0"/>
+
+            </td>
+
+            </td>
+            </td>
         </tr>
         <tr>
             <td><label></label></td>

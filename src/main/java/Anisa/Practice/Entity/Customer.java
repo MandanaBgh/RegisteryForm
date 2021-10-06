@@ -109,19 +109,10 @@ public class Customer {
 
     public void setBirthday(Date birthday) {
         ConvertDateTime(birthday);
-//        if (year > 1800) {
-//            localDate = LocalDate.of(year, month, day);
-//            persianDate = PersianDate.fromGregorian(localDate);
-//            this.birthday = java.sql.Date.valueOf(String.valueOf(persianDate));
-//        } else {
-
         persianDate = PersianDate.of(this.year, this.month, this.day);
         localDate = persianDate.toGregorian();
 
         this.birthday = java.sql.Date.valueOf(localDate);
-
-        //  }
-
 
     }
 
