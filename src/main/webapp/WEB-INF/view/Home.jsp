@@ -39,7 +39,10 @@
         <tr>
             <td> ${tempCustomer.name} </td>
             <td> ${tempCustomer.lastname} </td>
-            <td><img src="imageDisplay?id=${tempCustomer.id}" height="60px" width="60px"/></td>
+            <td><img src="${pageContext.request.contextPath}/imageDisplay/${tempCustomer.id}" height="100px"
+                     width="100px"/>
+
+            </td>
             <td><fmt:formatDate pattern="yyyy/MM/dd" value="${tempCustomer.birthday}"/></td>
             <td>
                 <a href="${updateLink}">Update</a>

@@ -6,15 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
+
 public class AppController {
     @Autowired
     private CustomerService customerService;
@@ -22,7 +26,6 @@ public class AppController {
     // add mapping for GET /customers
     @GetMapping("/customers")
     public List<Customer> getCustomers() {
-
         return customerService.getCustomers();
 
     }
@@ -38,52 +41,49 @@ public class AppController {
     @GetMapping("/AddNewCustomer")
     public String newCustomer(Model theModel) {
         Customer theCustomer = new Customer();
-
         theModel.addAttribute("customer", theCustomer);
-
-
         return "AddCustomer";
     }
 
-    @RequestMapping(value = "/imageDisplay", method = RequestMethod.GET)
-    public void showImage(@RequestParam("id") Integer itemId, HttpServletResponse response, HttpServletRequest request)
-            throws ServletException, IOException {
-
-
-        Customer item = customerService.customerId(itemId);
-        byte[] image = item.getImage();
-        response.setContentType("image/jpeg");
-        ServletOutputStream outputStream = response.getOutputStream();
-        outputStream.write(image);
-
-        response.getOutputStream().close();
-
-
+    @GetMapping("/imageDisplay/{id}")
+    // @RequestMapping(value = "/imageDisplay", method = RequestMethod.GET)
+    public void showImage(@PathVariable("id") Integer itemId, HttpServletResponse response, HttpServletRequest request) {
+        try {
+            Customer item = customerService.customerId(itemId);
+            byte[] image = item.getImage();
+            response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
+            response.getOutputStream().write(item.getImage());
+            response.getOutputStream().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @GetMapping("/showFormForUpdate")
     public String showFormForUpdate(@RequestParam("customerId") int theId,
                                     Model theModel) {
 
-        // get the customer from our service
         Customer theCustomer = customerService.customerId(theId);
-
-        // set customer as a model attribute to pre-populate the form
         theModel.addAttribute("customer", theCustomer);
-
-        // send over to our form
         return "AddCustomer";
     }
 
 
     @PostMapping("/saveCustomer")
-    public String saveCustomer(@ModelAttribute("customer") Customer theCustomer) {
+    public String saveCustomer(@ModelAttribute("customer") Customer theCustomer,
+                               final @RequestParam("image") MultipartFile file) {
+        try {
+            System.out.println("SIZEEEEEEE" + file.getSize());
+            byte[] image = file.getBytes();
+            theCustomer.setImage(image);
 
-        // save the customer using our service
-        customerService.saveCustomer(theCustomer);
+            customerService.saveCustomer(theCustomer);
 
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "redirect:/Home";
-
 
     }
 
