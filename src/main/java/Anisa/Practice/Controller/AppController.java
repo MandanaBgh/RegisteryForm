@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -70,10 +71,11 @@ public class AppController {
 
 
     @PostMapping("/saveCustomer")
+    //  @RequestMapping(value = "/saveCustomer", method = RequestMethod.POST)
     public String saveCustomer(@ModelAttribute("customer") Customer theCustomer,
-                               final @RequestParam("image") MultipartFile file) {
+                               @RequestParam("photo") CommonsMultipartFile file) {
         try {
-            System.out.println("SIZEEEEEEE" + file.getSize());
+
             byte[] image = file.getBytes();
             theCustomer.setImage(image);
 

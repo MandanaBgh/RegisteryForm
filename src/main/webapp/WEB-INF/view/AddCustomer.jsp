@@ -29,7 +29,9 @@
 
 <h3>New Customer</h3>
 
-<form:form modelAttribute="customer" method="POST" action="saveCustomer" enctype="multipart/form-data">
+<form:form modelAttribute="customer" method="POST" action="saveCustomer" enctype="multipart/form-data"
+           processData="false" contentType="false" cache="false">
+    <form:hidden path="id"/>
     <table>
         <tbody>
         <tr>
@@ -44,7 +46,7 @@
 
         <tr>
             <td><label>Image:</label></td>
-            <td><form:input path="image" type="file" name="image" id="image"/></td>
+            <td><input type="file" name="photo"/></td>
         </tr>
         <tr>
             <td><label>BirthDay:</label></td>
