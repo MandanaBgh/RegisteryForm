@@ -1,18 +1,14 @@
 package Anisa.Practice.Entity;
 
 
-//import com.github.mfathi91.time.PersianDate;
-
 import com.github.mfathi91.time.PersianDate;
-import org.hibernate.hql.spi.id.inline.AbstractInlineIdsBulkIdHandler;
 
 import javax.persistence.*;
 
-
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Arrays;
 
@@ -31,9 +27,14 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+
     @Column(name = "name")
+    @NotNull(message = "is required")
+    @Size(min = 1, message = "is required")
     private String name;
 
+
+    @NotNull(message = "Last Name can not be null!!")
     @Column(name = "lastname")
     private String lastname;
 

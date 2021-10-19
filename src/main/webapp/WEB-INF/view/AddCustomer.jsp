@@ -9,6 +9,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page isELIgnored="false" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <link rel="stylesheet" href="<c:url value="/resources/css/persian-datepicker.css" />">
 <script type="text/javascript" src="<c:url value="/resources/js/jquery.min.js" />"></script>
@@ -20,6 +21,11 @@
         $('#datepicker0').datepicker();
     })
 </script>
+<style>
+    .error {
+        color: red;
+    }
+</style>
 
 <html>
 <head>
@@ -35,13 +41,16 @@
     <table>
         <tbody>
         <tr>
-            <td><label>First name:</label></td>
+            <td><label>First name(*):</label></td>
             <td><form:input path="name"/></td>
+            <form:errors path="name" cssClass="error"/>
+
         </tr>
 
         <tr>
             <td><label>Last name:</label></td>
             <td><form:input path="lastname"/></td>
+            <form:errors path="lastname" cssClass="error"/>
         </tr>
 
         <tr>

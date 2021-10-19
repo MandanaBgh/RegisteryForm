@@ -1,21 +1,24 @@
 package Anisa.Practice.Controller;
 
 import Anisa.Practice.Entity.Customer;
+import Anisa.Practice.Entity.Students;
 import Anisa.Practice.Service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
+
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import javax.validation.Valid;
+
+
 import java.util.List;
 
 @Controller
@@ -23,6 +26,16 @@ import java.util.List;
 public class AppController {
     @Autowired
     private CustomerService customerService;
+
+
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+
+        dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+    }
+
 
     // add mapping for GET /customers
     @GetMapping("/customers")
@@ -70,23 +83,28 @@ public class AppController {
     }
 
 
-    @PostMapping("/saveCustomer")
-    //  @RequestMapping(value = "/saveCustomer", method = RequestMethod.POST)
-    public String saveCustomer(@ModelAttribute("customer") Customer theCustomer,
+    //  @PostMapping("/saveCustomer")
+    @RequestMapping(value = "/saveCustomer", method = RequestMethod.POST)
+    public String saveCustomer(@Valid @ModelAttribute("customer") Customer customer, BindingResult theBindingResult,
                                @RequestParam("photo") CommonsMultipartFile file) {
-        try {
-
-            byte[] image = file.getBytes();
-            theCustomer.setImage(image);
-
-            customerService.saveCustomer(theCustomer);
 
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (theBindingResult.hasErrors()) {
+            return "AddCustomer";
+        } else {
+            try {
+
+                byte[] image = file.getBytes();
+                customer.setImage(image);
+
+                customerService.saveCustomer(customer);
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "redirect:/Home";
         }
-        return "redirect:/Home";
-
     }
 
     @GetMapping("/delete")
@@ -96,6 +114,20 @@ public class AppController {
         customerService.deleteCustomer(theId);
 
         return "redirect:/Home";
+    }
+
+
+    @RequestMapping("/processForm")
+    public String processForm(
+            @Valid @ModelAttribute("customer") Customer theCustomer,
+            BindingResult theBindingResult) {
+
+
+        if (theBindingResult.hasErrors()) {
+            return "customer-form";
+        } else {
+            return "customer-confirmation";
+        }
     }
 
 

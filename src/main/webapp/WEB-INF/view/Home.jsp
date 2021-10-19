@@ -18,6 +18,7 @@
 <h1>Welcome to Registration Page</h1>
 <p>
     <a href="${pageContext.request.contextPath}/AddNewCustomer">Add New Customer</a>
+    <a href="${pageContext.request.contextPath}/showForm">Customer form</a>
 </p>
 
 <table>

@@ -19,7 +19,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import javax.servlet.annotation.MultipartConfig;
+
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 import java.util.Properties;
